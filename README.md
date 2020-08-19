@@ -1,4 +1,4 @@
-# Pong
+# PÖNG
 by Hri7566
 
 Made with [LÖVE](https://love2d.org "LÖVE - Free 2D Game Engine").
