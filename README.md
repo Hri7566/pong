@@ -1,7 +1,7 @@
 # PÖNG
 by Hri7566
 
-Made with much [LÖVE](https://love2d.org "LÖVE - Free 2D Game Engine").
+Made with [LÖVE](https://love2d.org "LÖVE - Free 2D Game Engine").
 
 The Bit fonts are from [here](http://www.mattlag.com/bitfonts/ "Matt LaGrandeur - BitFonts").
 
