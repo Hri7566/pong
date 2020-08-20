@@ -1,32 +1,5 @@
 game = {}
 
-local p = {
-    x = 32,
-    y = 0,
-    width = 16,
-    height = 96,
-    speed = 5,
-    score = 0
-}
-
-local p2 = {
-    x = 0,
-    y = 0,
-    width = 16,
-    height = 96,
-    speed = 5,
-    score = 0
-}
-
-ball = {
-    x = 0,
-    y = 0,
-    width = 16,
-    height = 16,
-    velx = 3,
-    vely = 3
-}
-
 function game.load()
     p.score = 0
     p2.score = 0
@@ -39,6 +12,7 @@ function game.load()
     p.x = 16
     p.y = love.graphics:getHeight()/2 - p.height/2
 
+    p2.height = 96
     p2.x = love.graphics:getWidth() - p.width - 16
     p2.y = love.graphics:getHeight()/2 - p2.height/2
 
@@ -125,10 +99,9 @@ function game.draw()
         love.graphics.rectangle("fill", love.graphics.getWidth()/2-8, i*32, 8, 16)
     end
 
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("fill", p.x, p.y, p.width, p.height)
+    p:draw()
     love.graphics.printf(p.score, font, love.graphics:getWidth()/4-font:getWidth(p.score), 32, 500, "left", 0, 2, 2)
-    love.graphics.rectangle("fill", p2.x, p2.y, p2.width, p2.height)
+    p2:draw()
     love.graphics.printf(p2.score, font, love.graphics:getWidth()/4*3-font:getWidth(p2.score), 32, 500, "left", 0, 2, 2)
-    love.graphics.rectangle("fill", ball.x, ball.y, ball.width, ball.height)
+    ball:draw()
 end
