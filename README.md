@@ -16,3 +16,11 @@ A macOS app is also provided.
 ## Usage
 
 Use this code however you like, just don't modify [LÖVE](https://love2d.org "LÖVE - Free 2D Game Engine") itself.
+
+## Changelog
+
+### Updates in v1.1:
+ + Added colors in main menu
+ + Added debug mode
+   + Click the ball in the main menu to activate debug features
+ + Fixed pseudo-randomness not being very random

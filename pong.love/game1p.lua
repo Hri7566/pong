@@ -18,7 +18,7 @@ local p2 = {
     score = 0
 }
 
-local ball = {
+ball = {
     x = 0,
     y = 0,
     width = 16,
@@ -29,7 +29,7 @@ local ball = {
 
 mode = false
 
-local gamespeed = 50
+gamespeed = 50
 local speedup = 5
 
 function game1p.load()
@@ -87,7 +87,6 @@ function game1p.update(dt)
     
     if (ball.y < 0 and ball.vely < 0) or (ball.y > love.graphics:getHeight() - ball.height and ball.vely > 0) then
         ball.vely = -ball.vely
-        gamespeed = gamespeed + speedup
     end
 
     if (ball.x <= p.x + p.width and ball.x >= p.x and ball.y >= p.y and ball.y + ball.height <= p.y + p.height and ball.velx < 0) or (ball.x + ball.width >= p2.x and ball.y >= p2.y and ball.y + ball.height <= p2.y + p2.height and ball.velx > 0) then
@@ -96,9 +95,9 @@ function game1p.update(dt)
         end
         ball.velx = -ball.velx
         if ball.vely > 0 then
-            ball.vely = math.random(0, 5)
+            ball.vely = love.math.random(0, 5)
         else
-            ball.vely = math.random(-5, 0)
+            ball.vely = love.math.random(-5, 0)
         end
         gamespeed = gamespeed + speedup
     end
