@@ -19,6 +19,12 @@ Use this code however you like, just don't modify [LÃ–VE](https://love2d.org "LÃ
 
 ## Changelog
 
+### Updates in v1.2:
+ + Ball and players are now classes
+   + Due to this, the ball is now blue everywhere instead of just the main menu in debug mode
+   + Ball and players are now defined in main.lua instead of the individual gamemode files
+ + Fixed the 1-player score font
+
 ### Updates in v1.1.1:
  + Fixed issue that prevented a 2-player game from ending after deuce
  + Fixed bug where scores would not reset after a finished game
