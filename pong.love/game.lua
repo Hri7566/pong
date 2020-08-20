@@ -27,12 +27,15 @@ ball = {
     vely = 3
 }
 
-mode = false
-
-gamespeed = 50
-local speedup = 5
-
 function game.load()
+    p.score = 0
+    p2.score = 0
+
+    mode = false
+
+    gamespeed = 50
+    local speedup = 5
+
     p.x = 16
     p.y = love.graphics:getHeight()/2 - p.height/2
 
@@ -76,21 +79,21 @@ function game.update(dt)
         ball.y = ball.y + ball.vely * dt*gamespeed
     end
 
+    if p.score >= 11 and p.score > p2.score + 2 then
+        gamemode = "menu"
+        mode = false
+    end
+    
+    if p2.score >= 11 and p2.score > p.score + 2 then
+        gamemode = "menu"
+        mode = false
+    end
+
     if ball.x < 0 or ball.x > love.graphics:getWidth() - ball.width then
         if ball.x < love.graphics:getWidth()/2 then
-            if p2.score >= 11 and p2.score > p.score + 2 then
-               gamemode = "menu"
-               mode = false 
-            else
-                p2.score = p2.score + 1
-            end
+            p2.score = p2.score + 1
         else
-            if p.score >= 11 and p.score > p2.score + 2 then
-                gamemode = "menu"
-                mode = false
-            else
-                p.score = p.score + 1
-            end
+            p.score = p.score + 1
         end
         ball.x = love.graphics:getWidth()/2 - ball.width/2
         ball.y = love.graphics:getHeight()/2 - ball.height/2
@@ -124,8 +127,8 @@ function game.draw()
 
     love.graphics.setColor(1, 1, 1)
     love.graphics.rectangle("fill", p.x, p.y, p.width, p.height)
-    love.graphics.printf(p.score, font, love.graphics:getWidth()/4-font:getWidth(p.score)/2, 32, 500, "left", 0, 1, 2)
+    love.graphics.printf(p.score, font, love.graphics:getWidth()/4-font:getWidth(p.score), 32, 500, "left", 0, 2, 2)
     love.graphics.rectangle("fill", p2.x, p2.y, p2.width, p2.height)
-    love.graphics.printf(p2.score, font, love.graphics:getWidth()/4*3-font:getWidth(p2.score)/2, 32, 500, "left", 0, 1, 2)
+    love.graphics.printf(p2.score, font, love.graphics:getWidth()/4*3-font:getWidth(p2.score), 32, 500, "left", 0, 2, 2)
     love.graphics.rectangle("fill", ball.x, ball.y, ball.width, ball.height)
 end

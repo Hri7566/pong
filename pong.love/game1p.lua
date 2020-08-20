@@ -33,6 +33,8 @@ gamespeed = 50
 local speedup = 5
 
 function game1p.load()
+    p.score = 0
+    
     p.x = 16
     p.y = love.graphics:getHeight()/2 - p.height/2
 

@@ -3,8 +3,9 @@ require('game1p')
 require('button')
 
 gamemode = "menu"
-font = love.graphics.newFont("bit5x5.ttf", 72)
+font = love.graphics.newFont("bit5x3.ttf", 72)
 buttonfont = love.graphics.newFont("bit5x5.ttf", 25)
+titlefont = love.graphics.newFont("bit5x5.ttf", 72)
 
 ball = {
     x = love.graphics.getWidth()/2 - 16,
@@ -107,7 +108,7 @@ function love.draw()
             love.graphics.rectangle("fill", love.graphics.getWidth()/2-8, i*32, 8, 16)
         end
         love.graphics.setColor(1, 1, 1)
-        love.graphics.printf("PONG", font, 16, 16, 1000)
+        love.graphics.printf("PONG", titlefont, 16, 16, 1000)
         love.graphics.setColor(1, 1, 1)
         love.graphics.printf("Written by Hri7566", buttonfont, love.graphics.getWidth() - buttonfont:getWidth("Written") - 16, love.graphics.getHeight() - buttonfont:getHeight("W")*3 - 16, 150, "center")
         love.graphics.setColor(color)
