@@ -19,6 +19,11 @@ Use this code however you like, just don't modify [LÃ–VE](https://love2d.org "LÃ
 
 ## Changelog
 
+### Updates in v1.2.1:
+ + Fixed a bug where buttons were clickable anywhere
+ + Added a new but unused menu
+ + Changed button colors to make text more visible
+
 ### Updates in v1.2:
  + Ball and players are now classes
    + Due to this, the ball is now blue everywhere instead of just the main menu in debug mode

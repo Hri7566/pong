@@ -32,20 +32,40 @@ function love.load()
     color = {1, 1, 1}
     love.window.setTitle('Pong')
     buttons = {}
-    buttons["2p"] = Button:new("2P", 16, love.graphics.getHeight()-136, 128, 32, function()
+    buttons["2p"] = Button:new("2P", 16, love.graphics.getHeight()-180, 128, 32, function()
         gamemode = "2p" game.load()
     end, nil, {1, 1, 1}, buttonfont)
-    buttons["1p"] = Button:new("1P", 16, love.graphics.getHeight()-92, 128, 32, function()
+    buttons["1p"] = Button:new("1P", 16, love.graphics.getHeight()-136, 128, 32, function()
         gamemode = "1p" game1p.load()
     end, nil, {1, 1, 1}, buttonfont)
+    buttons["config"] = Button:new("Config", 16, love.graphics.getHeight()-92, 128, 32, function()
+        gamemode = "config"
+    end, nil, {.25, .5, 1}, buttonfont)
     buttons["quit"] = Button:new("Quit", 16, love.graphics.getHeight()-48, 128, 32, function()
         love.event.quit(0)
-    end, nil, {1, 0, 0}, buttonfont)
+    end, nil, {.75, .15, .15}, buttonfont)
+
+    cbuttons = {}
+    cbuttons["back"] = Button:new("Back", 16, love.graphics.getHeight()-48, 128, 32, function()
+        gamemode = "menu"
+    end, nil, {.75, .15, .15}, buttonfont)
 end
 
 function love.update(dt)
     mx, my = love.mouse.getPosition()
     for i,button in pairs(buttons) do
+        if (mx > button.x and mx < button.x + button.width) and (my > button.y and my < button.y + button.height) then
+            if button.width < 128 * 5 then
+                button.width = button.width - math.tan(math.rad(button.width))*10
+            end
+        else
+            if button.width > 128 then
+                button.width = button.width + math.cos(math.rad(button.width))*5
+            end
+        end
+    end
+
+    for i,button in pairs(cbuttons) do
         if (mx > button.x and mx < button.x + button.width) and (my > button.y and my < button.y + button.height) then
             if button.width < 128 * 5 then
                 button.width = button.width - math.tan(math.rad(button.width))*10
@@ -77,10 +97,20 @@ function love.update(dt)
 end
 
 function love.mousepressed(x, y, key, istouch, presses)
-    for i,button in pairs(buttons) do
-        if x > button.x and x < button.x + button.width then
-            if y > button.y and y < button.y + button.height then
-                button.func()
+    if gamemode == "menu" then
+        for i,button in pairs(buttons) do
+            if x > button.x and x < button.x + button.width then
+                if y > button.y and y < button.y + button.height then
+                    button.func()
+                end
+            end
+        end
+    elseif gamemode == "config" then
+        for i,button in pairs(cbuttons) do
+            if x > button.x and x < button.x + button.width then
+                if y > button.y and y < button.y + button.height then
+                    button.func()
+                end
             end
         end
     end
@@ -101,7 +131,17 @@ function love.draw()
         game.draw()
     elseif gamemode == "1p" then
         game1p.draw()
-    else
+    elseif gamemode == "config" then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.printf("Coming Soon", titlefont, 0, love.graphics.getHeight()/2 - titlefont:getHeight("Coming Soon")/2, love.graphics.getWidth(), "center")
+        love.graphics.printf("Maybe in 1.3?", buttonfont, 0, love.graphics.getHeight()/2 + titlefont:getHeight("Coming Soon")/2 + 16, love.graphics.getWidth(), "center")
+        for i,button in pairs(cbuttons) do
+            love.graphics.setColor(button.color)
+            love.graphics.rectangle("fill", button.x, button.y, button.width, button.height)
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.printf(button.text, buttonfont, button.x, button.y + buttonfont:getHeight(button.text)/2, button.width, "center")
+        end
+    elseif gamemode == "menu" then
         love.graphics.setColor(.5, .5, .5)
         for i=0,love.graphics.getHeight() do
             love.graphics.rectangle("fill", love.graphics.getWidth()/2-8, i*32, 8, 16)
