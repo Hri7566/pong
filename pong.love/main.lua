@@ -3,11 +3,17 @@ require('game1p')
 require('button')
 require('ball')
 require('player')
+require('config')
+require('colors')
 
 gamemode = "menu"
 font = love.graphics.newFont("bit5x3.ttf", 72)
 buttonfont = love.graphics.newFont("bit5x5.ttf", 25)
 titlefont = love.graphics.newFont("bit5x5.ttf", 72)
+
+font:setFilter("nearest", "nearest")
+buttonfont:setFilter("nearest", "nearest")
+titlefont:setFilter("nearest", "nearest")
 
 p = Player:new(32, 0, 16, 96, 5, 0)
 
@@ -19,36 +25,64 @@ debug = false
 
 function love.keypressed(key, scancode, isrepeat)
     if key == "escape" then
-        if gamemode == "1p" or gamemode == "2p" then
+        if gamemode == "1p" or gamemode == "2p" or gamemode == "config" then
             gamemode = "menu"
             mode = false
         elseif gamemode == "menu" then
             love.event.quit(0)
         end
     end
+    config.keypressed(key)
 end
 
 function love.load()
-    color = {1, 1, 1}
+    color = colors.white
     love.window.setTitle('Pong')
     buttons = {}
     buttons["2p"] = Button:new("2P", 16, love.graphics.getHeight()-180, 128, 32, function()
         gamemode = "2p" game.load()
-    end, nil, {1, 1, 1}, buttonfont)
+    end, nil, colors.white, buttonfont)
     buttons["1p"] = Button:new("1P", 16, love.graphics.getHeight()-136, 128, 32, function()
         gamemode = "1p" game1p.load()
-    end, nil, {1, 1, 1}, buttonfont)
+    end, nil, colors.white, buttonfont)
     buttons["config"] = Button:new("Config", 16, love.graphics.getHeight()-92, 128, 32, function()
         gamemode = "config"
-    end, nil, {.25, .5, 1}, buttonfont)
+    end, nil, colors.blue, buttonfont)
     buttons["quit"] = Button:new("Quit", 16, love.graphics.getHeight()-48, 128, 32, function()
         love.event.quit(0)
-    end, nil, {.75, .15, .15}, buttonfont)
+    end, nil, colors.red, buttonfont)
 
     cbuttons = {}
     cbuttons["back"] = Button:new("Back", 16, love.graphics.getHeight()-48, 128, 32, function()
         gamemode = "menu"
-    end, nil, {.75, .15, .15}, buttonfont)
+    end, nil, colors.red, buttonfont)
+    cbuttons["pup"] = Button:new(config.controls.player1.up, love.graphics.getWidth()/4 - 128/2, 128 + 32, 128, 32, function()
+        config.currentText = "Press a key"
+        config.currentKey = "pup"
+        config.configMode = true
+    end, nil, colors.blue, buttonfont)
+    cbuttons["pdown"] = Button:new(config.controls.player1.down, love.graphics.getWidth()/4 - 128/2, 128 + 80, 128, 32, function()
+        config.currentText = "Press a key"
+        config.currentKey = "pdown"
+        config.configMode = true
+    end, nil, colors.blue, buttonfont)
+    cbuttons["p2up"] = Button:new(config.controls.player2.up, love.graphics.getWidth()/4*3 - 128/2, 128 + 32, 128, 32, function()
+        config.currentText = "Press a key"
+        config.currentKey = "p2up"
+        config.configMode = true
+    end, nil, colors.blue, buttonfont)
+    cbuttons["p2down"] = Button:new(config.controls.player2.down, love.graphics.getWidth()/4*3 - 128/2, 128 + 80, 128, 32, function()
+        config.currentText = "Press a key"
+        config.currentKey = "p2down"
+        config.configMode = true
+    end, nil, colors.blue, buttonfont)
+    cbuttons["colorblind"] = Button:new(config.cbdisplay, love.graphics.getWidth()/2 - 128/2, love.graphics.getHeight() - 16*4, 128, 32, function()
+        if config.colorblind == true then
+            config.colorblind = false
+        else
+            config.colorblind = true
+        end
+    end, nil, colors.blue, buttonfont)
 end
 
 function love.update(dt)
@@ -81,7 +115,7 @@ function love.update(dt)
         game.update(dt)
     elseif gamemode == "1p" then
         game1p.update(dt)
-    else
+    elseif gamemode == "menu" or gamemode == "config" then
         ballspeed = ball.velx * dt*50
         ball.x = ball.x + ball.velx * dt*50
         ball.y = ball.y + ball.vely * dt*50
@@ -92,6 +126,31 @@ function love.update(dt)
 
         if (ball.y + ball.height > love.graphics.getHeight() and ball.vely > 0) or (ball.y < 0 and ball.vely < 0) then
             ball.vely = -ball.vely
+        end
+        config.update(dt, cbuttons)
+    end
+
+    if config.colorblind == true then
+        for i,button in pairs(buttons) do
+            if button.color == colors.blue then
+                button.color = colors.green
+            end
+        end
+        for i,button in pairs(cbuttons) do
+            if button.color == colors.blue then
+                button.color = colors.green
+            end
+        end
+    else
+        for i,button in pairs(buttons) do
+            if button.color == colors.green then
+                button.color = colors.blue
+            end
+        end
+        for i,button in pairs(cbuttons) do
+            if button.color == colors.green then
+                button.color = colors.blue
+            end
         end
     end
 end
@@ -118,10 +177,14 @@ function love.mousepressed(x, y, key, istouch, presses)
     if (mx > ball.x and mx < ball.x + ball.width) and (my > ball.y and my < ball.y + ball.height) then
         if debug then
             debug = false
-            color = {1, 1, 1}
+            color = colors.white
         else
             debug = true
-            color = {0, 1, 1}
+            if config.colorblind then
+                color = colors.lgreen
+            else
+                color = colors.lblue
+            end
         end
     end
 end
@@ -132,22 +195,27 @@ function love.draw()
     elseif gamemode == "1p" then
         game1p.draw()
     elseif gamemode == "config" then
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.printf("Coming Soon", titlefont, 0, love.graphics.getHeight()/2 - titlefont:getHeight("Coming Soon")/2, love.graphics.getWidth(), "center")
-        love.graphics.printf("Maybe in 1.3?", buttonfont, 0, love.graphics.getHeight()/2 + titlefont:getHeight("Coming Soon")/2 + 16, love.graphics.getWidth(), "center")
+        ball:draw()
+        love.graphics.setColor(colors.white)
+        love.graphics.printf(config.currentText, titlefont, 0, 16, love.graphics.getWidth(), "center")
+        love.graphics.printf("Left Side", buttonfont, 0, 128, love.graphics.getWidth()/2, "center")
+        love.graphics.printf("Right Side", buttonfont, love.graphics.getWidth()/2, 128, love.graphics.getWidth()/2, "center")
+        love.graphics.printf("David Mode", buttonfont, 0, cbuttons["colorblind"].y - 32, love.graphics.getWidth(), "center")
         for i,button in pairs(cbuttons) do
             love.graphics.setColor(button.color)
             love.graphics.rectangle("fill", button.x, button.y, button.width, button.height)
-            love.graphics.setColor(0, 0, 0)
+            love.graphics.setColor(colors.black)
             love.graphics.printf(button.text, buttonfont, button.x, button.y + buttonfont:getHeight(button.text)/2, button.width, "center")
         end
     elseif gamemode == "menu" then
-        love.graphics.setColor(.5, .5, .5)
+        love.graphics.setColor(colors.gray)
         for i=0,love.graphics.getHeight() do
             love.graphics.rectangle("fill", love.graphics.getWidth()/2-8, i*32, 8, 16)
         end
-        love.graphics.setColor(1, 1, 1)
+        love.graphics.setColor(colors.white)
         love.graphics.printf("PONG", titlefont, 16, 16, 1000)
+        love.graphics.rectangle("fill", 16 * 5, 4, 8, 8)
+        love.graphics.rectangle("fill", 16 * 6, 4, 8, 8)
         love.graphics.setColor(1, 1, 1)
         love.graphics.printf("Written by Hri7566", buttonfont, love.graphics.getWidth() - buttonfont:getWidth("Written") - 16, love.graphics.getHeight() - buttonfont:getHeight("W")*3 - 16, 150, "center")
         love.graphics.setColor(color)
@@ -155,12 +223,16 @@ function love.draw()
         for i,button in pairs(buttons) do
             love.graphics.setColor(button.color)
             love.graphics.rectangle("fill", button.x, button.y, button.width, button.height)
-            love.graphics.setColor(0, 0, 0)
+            love.graphics.setColor(colors.black)
             love.graphics.printf(button.text, buttonfont, button.x, button.y + buttonfont:getHeight(button.text)/2, button.width, "center")
         end
     end
     if debug then
-        love.graphics.setColor(0, 1, 1)
+        if config.colorblind then
+            love.graphics.setColor(colors.lgreen)
+        else
+            love.graphics.setColor(colors.lblue)
+        end
         love.graphics.print("Debug enabled", 0, 0)
         love.graphics.print("FPS: " .. love.timer.getFPS(), 0, 10)
         love.graphics.print("Gamemode: " .. gamemode, 0, 20)

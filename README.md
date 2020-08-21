@@ -19,6 +19,14 @@ Use this code however you like, just don't modify [LÃ–VE](https://love2d.org "LÃ
 
 ## Changelog
 
+### Updates in v1.3:
+ + Fixed a bug where singleplayer allows the player to move twice as fast
+ + Added a config menu
+   + Added ability to change controls
+   + Added "David Mode" (red/blue colorblind mode)
+     + All blue colors will change to green when enabled
+ + Fixed blurry text filtering
+
 ### Updates in v1.2.1:
  + Fixed a bug where buttons were clickable anywhere
  + Added a new but unused menu

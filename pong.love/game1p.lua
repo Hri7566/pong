@@ -21,24 +21,22 @@ end
 
 function game1p.update(dt)
     speedup = love.math.random(0, 5)
-    if love.keyboard.isDown("w") and p.y > 0 then
+    if love.keyboard.isDown(config.controls.player1.up) and p.y > 0 then
         p.y = p.y - p.speed * dt*gamespeed
         if mode == false then
             mode = true
         end
-    elseif love.keyboard.isDown("s") and p.y < love.graphics.getHeight() - p.height then
+    elseif love.keyboard.isDown(config.controls.player1.down) and p.y < love.graphics.getHeight() - p.height then
         p.y = p.y + p.speed * dt*gamespeed
         if mode == false then
             mode = true
         end
-    end
-
-    if love.keyboard.isDown("up") and p.y > 0 then
+    elseif love.keyboard.isDown(config.controls.player2.up) and p.y > 0 then
         p.y = p.y - p.speed * dt*gamespeed
         if mode == false then
             mode = true
         end
-    elseif love.keyboard.isDown("down") and p.y < love.graphics.getHeight() - p.height then
+    elseif love.keyboard.isDown(config.controls.player2.down) and p.y < love.graphics.getHeight() - p.height then
         p.y = p.y + p.speed * dt*gamespeed
         if mode == false then
             mode = true

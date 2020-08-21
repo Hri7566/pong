@@ -10,7 +10,15 @@ function Ball:new(x, y, w, h, vx, vy)
     self.vely = vy
 
     function self:draw()
-        love.graphics.setColor(color)
+        if debug then
+            if config.colorblind then
+                love.graphics.setColor(colors.lgreen)
+            else
+                love.graphics.setColor(colors.lblue)
+            end
+        else
+            love.graphics.setColor(color)
+        end
         love.graphics.rectangle("fill", ball.x, ball.y, ball.width, ball.height)
     end
 
