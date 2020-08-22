@@ -7,14 +7,11 @@ local speedup = 5
 
 function game1p.load()
     p.score = 0
-    
     p.x = 16
     p.y = love.graphics:getHeight()/2 - p.height/2
-
     p2.height = love.graphics.getHeight()
     p2.x = love.graphics:getWidth() - p.width - 16
     p2.y = love.graphics:getHeight()/2 - p2.height/2
-
     ball.x = love.graphics:getWidth()/2 - ball.width/2
     ball.y = love.graphics:getHeight()/2 - ball.height/2
 end
@@ -79,11 +76,9 @@ end
 
 function game1p.draw()
     love.graphics.setColor(.5, .5, .5)
-    
     for i=0,love.graphics.getHeight() do
         love.graphics.rectangle("fill", love.graphics.getWidth()/2-8, i*32, 8, 16)
     end
-
     love.graphics.setColor(1, 1, 1)
     love.graphics.rectangle("fill", p.x, p.y, p.width, p.height)
     love.graphics.printf(p.score, font, love.graphics:getWidth()/4-font:getWidth(p.score), 32, 500, "left", 0, 2, 2)
