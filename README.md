@@ -19,6 +19,9 @@ Use this code however you like, just don't modify [LÃ–VE](https://love2d.org "LÃ
 
 ## Changelog
 
+### Updates in v1.3.1:
+ + Removed "David Mode" joke
+
 ### Updates in v1.3:
  + Fixed a bug where singleplayer allows the player to move twice as fast
  + Added a config menu

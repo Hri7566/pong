@@ -15,7 +15,6 @@ config.controls.player2 = {
 config.currentText = "Controls"
 config.configMode = false
 config.currentKey = ""
-config.colorblind = false
 config.cbdisplay = "Off"
 
 function config.keypressed(key)
@@ -35,11 +34,6 @@ function config.keypressed(key)
 end
 
 function config.update(dt, cbuttons)
-    if config.colorblind == true then
-        config.cbdisplay = "On"
-    else
-        config.cbdisplay = "Off"
-    end
     if cbuttons["pup"].text ~= config.controls.player1.up then
         cbuttons["pup"].text = config.controls.player1.up
     end
@@ -51,8 +45,5 @@ function config.update(dt, cbuttons)
     end
     if cbuttons["p2down"].text ~= config.controls.player2.down then
         cbuttons["p2down"].text = config.controls.player2.down
-    end
-    if cbuttons["colorblind"].text ~= config.cbdisplay then
-        cbuttons["colorblind"].text = config.cbdisplay
     end
 end

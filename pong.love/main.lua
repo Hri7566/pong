@@ -76,13 +76,6 @@ function love.load()
         config.currentKey = "p2down"
         config.configMode = true
     end, nil, colors.blue, buttonfont)
-    cbuttons["colorblind"] = Button:new(config.cbdisplay, love.graphics.getWidth()/2 - 128/2, love.graphics.getHeight() - 16*4, 128, 32, function()
-        if config.colorblind == true then
-            config.colorblind = false
-        else
-            config.colorblind = true
-        end
-    end, nil, colors.blue, buttonfont)
 end
 
 function love.update(dt)
@@ -200,7 +193,6 @@ function love.draw()
         love.graphics.printf(config.currentText, titlefont, 0, 16, love.graphics.getWidth(), "center")
         love.graphics.printf("Left Side", buttonfont, 0, 128, love.graphics.getWidth()/2, "center")
         love.graphics.printf("Right Side", buttonfont, love.graphics.getWidth()/2, 128, love.graphics.getWidth()/2, "center")
-        love.graphics.printf("David Mode", buttonfont, 0, cbuttons["colorblind"].y - 32, love.graphics.getWidth(), "center")
         for i,button in pairs(cbuttons) do
             love.graphics.setColor(button.color)
             love.graphics.rectangle("fill", button.x, button.y, button.width, button.height)
@@ -228,11 +220,7 @@ function love.draw()
         end
     end
     if debug then
-        if config.colorblind then
-            love.graphics.setColor(colors.lgreen)
-        else
-            love.graphics.setColor(colors.lblue)
-        end
+        love.graphics.setColor(color)
         love.graphics.print("Debug enabled", 0, 0)
         love.graphics.print("FPS: " .. love.timer.getFPS(), 0, 10)
         love.graphics.print("Gamemode: " .. gamemode, 0, 20)
