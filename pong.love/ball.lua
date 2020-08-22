@@ -8,7 +8,6 @@ function Ball:new(x, y, w, h, vx, vy)
     self.height = h
     self.velx = vx
     self.vely = vy
-
     function self:draw()
         if debug then
             if config.colorblind then
